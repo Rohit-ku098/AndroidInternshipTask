@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="cardColor">#F6F9FF</color>
+    <color name="linkColor">#1877F2</color>
+    <color name="primaryOrange">#ff6217</color>
+    <color name="secondaryText">#999797</color>
+    <color name="outlineColor">#636363</color>
+    <color name="textColor">#242424</color>
+</resources>

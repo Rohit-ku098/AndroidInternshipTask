@@ -1,0 +1,73 @@
+package com.example.taskproject
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.taskproject.adapters.BrandListRecyclerViewAdapter
+import com.example.taskproject.databinding.ActivityMainBinding
+import com.example.taskproject.fragments.CouponBottomSheet
+import com.example.taskproject.model.Brand
+
+class MainActivity : AppCompatActivity() {
+    lateinit var binding: ActivityMainBinding
+    lateinit var recyclerView: RecyclerView
+    lateinit var recyclerViewAdapter: BrandListRecyclerViewAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+
+        }
+
+
+        setupBrandListRecyclerView()
+
+        binding.customLinkBtn.setOnClickListener {
+            val intent = Intent(this, CustomLinkActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun setupBrandListRecyclerView() {
+        val brandList: List<Brand> = listOf(
+            Brand("Apple", R.drawable.img_brand_1, "www.MERCEDEDS.com", "HFJSKRHS"),
+            Brand("BMW", R.drawable.img_brand_2, "taplink.cc/BMW.com", "ROBOIJGD"),
+            Brand("CarChalao", R.drawable.img_brand_3, "www.CarChalao.com", "OWIENFNG"),
+            Brand("Muscle Blaze", R.drawable.img_brand_4, "www.racked.com", "ASDVOIDF"),
+            Brand("Mercedes", R.drawable.img_brand_5, "www.Mercedes.com", "OIBNOID"),
+            Brand("Apple", R.drawable.img_brand_1, "www.MERCEDEDS.com", "HFJSKRHS"),
+            Brand("BMW", R.drawable.img_brand_2, "taplink.cc/BMW.com", "ROBOIJGD"),
+            Brand("CarChalao", R.drawable.img_brand_3, "www.CarChalao.com", "OWIENFNG"),
+        )
+
+        recyclerView = binding.brandListRecyclerView
+        recyclerViewAdapter = BrandListRecyclerViewAdapter(brandList)
+        recyclerView.adapter = recyclerViewAdapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
+
+        recyclerViewAdapter.setOnItemClickListener(object: BrandListRecyclerViewAdapter.ItemClickListener {
+            override fun onItemClick(position: Int) {
+                val couponBottomSheet = CouponBottomSheet()
+                val bundle = Bundle()
+                bundle.putSerializable("brand", brandList[position])
+                couponBottomSheet.arguments = bundle
+                couponBottomSheet.show(supportFragmentManager, "CouponBottomSheet")
+            }
+        })
+
+    }
+}
